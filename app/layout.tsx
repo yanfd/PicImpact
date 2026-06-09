@@ -18,12 +18,18 @@ export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  try {
+    const data = await fetchCustomInfo()
 
-  const data = await fetchCustomInfo()
-
-  return {
-    title: data?.find((item: any) => item.config_key === 'custom_title')?.config_value || 'PicImpact',
-    icons: { icon: data?.find((item: any) => item.config_key === 'custom_favicon_url')?.config_value || './favicon.ico' },
+    return {
+      title: data?.find((item: any) => item.config_key === 'custom_title')?.config_value || 'PicImpact',
+      icons: { icon: data?.find((item: any) => item.config_key === 'custom_favicon_url')?.config_value || './favicon.ico' },
+    }
+  } catch (e) {
+    console.error('[generateMetadata] fetchCustomInfo failed:', e)
+    return {
+      title: 'PicImpact',
+    }
   }
 }
 
