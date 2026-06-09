@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import Masonry from '~/components/Masonry'
 import { fetchClientImagesListByAlbum, fetchClientImagesPageTotalByAlbum } from '~/server/db/query'
 import { ImageHandleProps } from '~/types'
@@ -22,6 +23,8 @@ export default async function Page({params}: { params: any }) {
   }
 
   return (
-    <Masonry {...props} />
+    <Suspense fallback={<div className="w-full h-32 flex items-center justify-center">加载中...</div>}>
+      <Masonry {...props} />
+    </Suspense>
   )
 }
